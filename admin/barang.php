@@ -1,6 +1,7 @@
 <?php include 'koneksi.php'; 
-    $pages = "barang";
-
+      include 'data_sesi.php';
+      $pages = "barang";
+      $huruf = "BRG";
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,45 +13,8 @@
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">SY Koko Pets</a>
-            </div>
-
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                </li>
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
+             <!-- INCLUDE NAVTOP -->
+             <?php include 'v_navtop.php'; ?>
         </nav>
         <!--/. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -67,7 +31,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            Dashboard <small> </small>
+                            Data Barang <small> </small>
                         </h1>
                     </div>
                 </div>
@@ -75,10 +39,17 @@
 
                 <div class="row">
                 <div class="col-md-12">
+                <!-- Advanced Tables -->
+                <div class="panel panel-default">
+                        <div class="panel-body">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" ><i class="fa fa-plus"> </i> Tambah</button>
+					     
+                        </div>
+                     </div>  
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Advanced Tables
+                             Table Data Barang
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -90,10 +61,9 @@
                                             <th>Kategori</th>
                                             <th>Suplier</th>
                                             <th>Nama Barang </th>
-                                            <th>Harga Jual</th>
-                                            <th>Harga Beli</th>
+                                           
                                             <th>Stok</th>
-                                            <th>Tanggal Update</th>
+                                            
                                             
                                         </tr>
                                     </thead>
@@ -106,13 +76,12 @@
                                                 ?>
                                         <tr class="gradeX">
                                             <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
-                                            <td><?php echo $data['id_barang']; ?></td>
+                                            <td><?php echo $data['id_kategori']; ?></td>
+                                            <td><?php echo $data['id_suplier']; ?></td>
+                                            <td><?php echo $data['nama_barang']; ?></td>
+                                            
+                                            <td><?php echo $data['stok']; ?></td>
+                                            
                                         </tr>
                                         <?php } ?>
                                     </tbody>
@@ -135,7 +104,79 @@
         <!-- /. PAGE WRAPPER  -->
     </div>
     <!-- /. WRAPPER  -->
+
+
+    <!-- MODAL TAMBAH -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="post" action="p_simpan_kategori.php">
+
+        <?Php 
+                                $result = mysqli_query($mysqli, "SELECT max(id_barang) as kodeTerbesar FROM barang");
+                                $data = mysqli_fetch_array($result);
+                                $kodeBarang = $data['kodeTerbesar'];
+                            
+                                // mengambil angka dari kode barang terbesar, menggunakan fungsi substr
+                                // dan diubah ke integer dengan (int)
+                                $urutan = (int) substr($kodeBarang, 3, 3);
+                            
+                                // bilangan yang diambil ini ditambah 1 untuk menentukan nomor urut berikutnya
+                                $urutan++;
+                            
+                                // membentuk kode barang baru
+                                // perintah sprintf("%03s", $urutan); berguna untuk membuat string menjadi 3 karakter
+                                // misalnya perintah sprintf("%03s", 15); maka akan menghasilkan '015'
+                                // angka yang diambil tadi digabungkan dengan kode huruf yang kita inginkan, misalnya BRG 
+                                
+                                $kodeBarang = $huruf . sprintf("%03s", $urutan);
+
+            ?>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id Barang </label>
+            <input type="text" class="form-control" id="" value="<?php echo $kodeBarang ?>" name="id_barang" readonly>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Nama Barang</label>
+            <input type="text" class="form-control" id="" name="nama_barang" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Nama Kategori</label>
+            <input type="text" class="form-control" id="" name="nama_kategori" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Nama Suplier</label>
+            <input type="text" class="form-control" id="" name="nama_suplier" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Harga Jual</label>
+            <input type="text" class="form-control" id="" name="harga_jual" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Harga Beli</label>
+            <input type="text" class="form-control" id="" name="harga_beli" required>
+          </div>
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
     <!-- JS Scripts-->
+
     <!-- jQuery Js -->
     <?php include 'v_script.php'; ?>
     
