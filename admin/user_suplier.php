@@ -1,6 +1,7 @@
 <?php include 'koneksi.php'; 
-      $pages = "kategori"; 
-      $huruf = "KAT";
+      include 'data_sesi.php';
+      $pages = "user_suplier"; 
+      $huruf = "SUP";
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,45 +13,9 @@
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">SY Koko Pets</a>
-            </div>
-
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                </li>
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
+            
+            <!-- INCLUDE NAVTOP -->
+               <?php include 'v_navtop.php'; ?>
         </nav>
         <!--/. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -67,7 +32,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            Kategori <small> </small>
+                        Data User Suplier <small> </small>
                         </h1>
                     </div>
                 </div>
@@ -91,7 +56,7 @@
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Table Kategori
+                             Table User Operator
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -99,9 +64,12 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Id Kategori</th>
-                                            <th>Nama Kategori</th>
-                                            <th>Aksi</th>
+                                            <th>Id Suplier</th>
+                                            <th>Nama Suplier</th>
+                                            <?PHP if($level == "4"){ ?> <tH>Password </th> <?PHP } ?>
+                                            <th>No. Telp </th>
+                                            <th>Level </th>
+                                            <th>Aksi </th>
                                             
                                         </tr>
                                     </thead>
@@ -109,16 +77,20 @@
                                                 <?php 
                                                
                                                 
-                                                $result = mysqli_query($mysqli, "SELECT * FROM kategori");
+                                                $result = mysqli_query($mysqli, "SELECT * FROM suplier where level = 2 ");
                                                 while($data = mysqli_fetch_array($result)){
-                                                    $id_kategori = $data['id_kategori'];
+                                                    $id_suplier = $data['id_suplier'];
                                                 ?>
                                         <tr class="gradeX">
-                                            <td><?php echo $data['id_kategori']; ?></td>
-                                            <td><?php echo $data['nama_kategori']; ?></td>
+                                            <td><?php echo $data['id_suplier']; ?></td>
+                                            <td><?php echo $data['nama_suplier']; ?></td>
+                                                <?PHP if($level == "4"){ ?> <td><?php echo $data['password']; ?></td> <?PHP } ?>
+                                            <td><?php echo $data['no_telp']; ?></td>
+                                            
+                                            <td><?php  $lev = $data['level']; if($lev == "2"){ $lev = "Suplier"; } echo "$lev"; ?> </td>
                                             <td>
-                                                    <a href="#editModal<?php echo $id_kategori; ?>" class="edit" data-toggle="modal"><i class="fa fa-edit" data-toggle="tooltip" title="Edit"  > </i> | </a>
-                                                    <a href="#hapusModal<?php echo $id_kategori; ?>" class="delete" data-toggle="modal"><i class="fa fa-trash" data-toggle="tooltip" title="Delete" style="color:red"> </i></a>
+                                                    <a href="#editModal<?php echo $id_suplier; ?>" class="edit" data-toggle="modal"><i class="fa fa-edit" data-toggle="tooltip" title="Edit"  > </i> | </a>
+                                                    <a href="#hapusModal<?php echo $id_suplier; ?>" class="delete" data-toggle="modal"><i class="fa fa-trash" data-toggle="tooltip" title="Delete" style="color:red"> </i></a>
                                             </td>
                                             
                                         </tr>
@@ -152,16 +124,16 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Suplier</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <form method="post" action="p_simpan_kategori.php">
+      <form method="post" action="p_simpan_suplier.php">
 
         <?Php 
-                                $result = mysqli_query($mysqli, "SELECT max(id_kategori) as kodeTerbesar FROM kategori");
+                                $result = mysqli_query($mysqli, "SELECT max(id_suplier) as kodeTerbesar FROM suplier");
                                 $data = mysqli_fetch_array($result);
                                 $kodeBarang = $data['kodeTerbesar'];
                             
@@ -181,18 +153,26 @@
 
             ?>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Id Kategori </label>
-            <input type="text" class="form-control" id="" value="<?php echo $kodeBarang ?>" name="id_kategori" readonly>
+            <label for="recipient-name" class="col-form-label">Id Suplier </label>
+            <input type="text" class="form-control" id="" value="<?php echo $kodeBarang ?>" name="id_suplier" readonly>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Nama Kategori</label>
-            <input type="text" class="form-control" id="" name="nama_kategori" required>
+            <label for="message-text" class="col-form-label">Nama Suplierr</label>
+            <input type="text" class="form-control" id="" name="nama_suplier" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Password</label>
+            <input type="password" class="form-control" id="" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">No. Telp</label>
+            <input type="text" class="form-control" id="" name="no_telp" required>
           </div>
       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+        <button type="submit" class="btn btn-primary" name="suplier">Simpan</button>
       </div>
       </form>
     </div>
@@ -205,35 +185,42 @@
                                                 <?php 
                                                
                                                 
-                                               $result = mysqli_query($mysqli, "SELECT * FROM kategori");
+                                               $result = mysqli_query($mysqli, "SELECT * FROM suplier where level= 2 ");
                                                while($data = mysqli_fetch_array($result)){
-                                                   $id_kategori = $data['id_kategori'];
-                                                   $nama_kategori = $data['nama_kategori'];
+                                                   $id_suplier = $data['id_suplier'];
+                                                   $nama_suplier = $data['nama_suplier'];
+                                                   $no_telp = $data['no_telp'];
                                                ?>
-<div class="modal fade" id="editModal<?php echo $id_kategori; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal<?php echo $id_suplier; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Kategori</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Suplier</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <form method="post" action="p_edit_kategori.php">
+      <form method="post" action="p_edit_suplier.php">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Id Kategori </label>
-            <input type="text" class="form-control" id="" value="<?php echo $id_kategori ?>" name="id_kategori" readonly>
+            <label for="recipient-name" class="col-form-label">Id Operator </label>
+            <input type="text" class="form-control" id="" value="<?php echo $id_suplier ?>" name="id_suplier" readonly>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Nama Kategori</label>
-            <input type="text" class="form-control" id="" value="<?php echo $nama_kategori ?>" name="nama_kategori" required>
+            <label for="message-text" class="col-form-label">Nama Operator</label>
+            <input type="text" class="form-control" id="" value="<?php echo $nama_suplier ?>" name="nama_suplier" required>
           </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">No Telp</label>
+            <input type="text" class="form-control" id="" value="<?php echo $no_telp ?>" name="no_telp" required>
+          </div>
+
+          
       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
+        <button type="submit" class="btn btn-primary" name="suplier">Simpan</button>
       </div>
       </form>
     </div>
@@ -246,13 +233,13 @@
 
 <!--Modal: modalConfirmDelete-->
 <?php
-                $result = mysqli_query($mysqli, "SELECT * FROM kategori");
+                $result = mysqli_query($mysqli, "SELECT * FROM suplier");
                 while($data = mysqli_fetch_array($result)){
-                    $id_kategori = $data['id_kategori'];
-                    $nama_kategori = $data['nama_kategori'];
+                    $id_suplier = $data['id_suplier'];
+                    $nama_suplier = $data['nama_suplier'];
                    
                 ?>
-<div class="modal fade" id="hapusModal<?php echo $id_kategori; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="hapusModal<?php echo $id_suplier; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
     <!--Content-->
@@ -264,10 +251,10 @@
 
       <!--Body-->
       <div class="modal-body">
-      <form method="post" action="p_hapus_kategori.php">
-      Kamu yakin menghhapus <b> <?php echo $nama_kategori; ?>  </b> dari database ?
+      <form method="post" action="p_hapus_suplier.php">
+      Kamu yakin menghhapus <b> <?php echo $nama_suplier; ?>  </b> dari database ?
         <!-- <i class="fas fa-times fa-4x animated rotateIn"></i> -->
-        <input type="hidden" name="id_kategori" value="<?php echo $id_kategori; ?>">
+        <input type="hidden" name="id_suplier" value="<?php echo $id_suplier; ?>">
 
       
 
@@ -276,7 +263,7 @@
 
       <!--Footer-->
       <div class="modal-footer flex-center">
-       <button class="btn btn-danger" name="simpan" type="submit">Yes</button>
+       <button class="btn btn-danger" name="suplier" type="submit">Yes</button>
         <a type="button" class="btn btn-default" data-dismiss="modal">No</a>
       </div>
     </div>

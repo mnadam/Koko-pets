@@ -1,4 +1,5 @@
 <?php include 'koneksi.php'; 
+      include 'data_sesi.php';
       $pages = "user_operator"; 
       $huruf = "OPR";
 ?>
@@ -12,45 +13,9 @@
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">SY Koko Pets</a>
-            </div>
+           <!-- INCLUDE NAVTOP -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                </li>
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
+           <?php include 'v_navtop.php'; ?>
         </nav>
         <!--/. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
@@ -67,7 +32,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            Dashboard <small> </small>
+                        Data User Operator <small> </small>
                         </h1>
                     </div>
                 </div>
@@ -82,12 +47,14 @@
                           
                 <div class="col-md-12">
                      <!-- Advanced Tables -->
+                     <?php if($level == "4") { ?>
                      <div class="panel panel-default">
                         <div class="panel-body">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" ><i class="fa fa-plus"> </i> Tambah</button>
 					     
                         </div>
                      </div>  
+                     <?php } ?>
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -101,9 +68,9 @@
                                         <tr>
                                             <th>Id Operator</th>
                                             <th>Nama Operator</th>
-                                            <tH>Password </th>
+                                            <?php if($level == "4") { ?> <tH>Password </th> <?php } ?>
                                             <th>Level </th>
-                                            <th>Aksi </th>
+                                            <?php if($level == "4") { ?> <th>Aksi </th> <?php } ?>
                                             
                                         </tr>
                                     </thead>
@@ -118,12 +85,12 @@
                                         <tr class="gradeX">
                                             <td><?php echo $data['id_operator']; ?></td>
                                             <td><?php echo $data['nama_operator']; ?></td>
-                                            <td><?php echo $data['password']; ?></td>
+                                                <?php if($level == "4") { ?> <td><?php echo $data['password']; ?></td> <?php } ?>
                                             <td><?php  $lev = $data['level']; if($lev == "3"){ $lev = "Operator"; } echo "$lev"; ?> </td>
-                                            <td>
+                                            <?php if($level == "4") { ?> <td>
                                                     <a href="#editModal<?php echo $id_operator; ?>" class="edit" data-toggle="modal"><i class="fa fa-edit" data-toggle="tooltip" title="Edit"  > </i> | </a>
                                                     <a href="#hapusModal<?php echo $id_operator; ?>" class="delete" data-toggle="modal"><i class="fa fa-trash" data-toggle="tooltip" title="Delete" style="color:red"> </i></a>
-                                            </td>
+                                            </td> <?php } ?>
                                             
                                         </tr>
                                         <?php } ?>

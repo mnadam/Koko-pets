@@ -136,7 +136,7 @@
 						</div>
 					</div>
 					<div class="footer">
-						Copyright &copy; 2021 &mdash; Koko Pets 
+						Copyright &copy; 2021 &mdash; SY Koko Pets 
 					</div>
 				</div>
 			</div>

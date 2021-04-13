@@ -16,4 +16,18 @@ mysqli_query($mysqli,"Update operator set nama_operator = '$nama' where id_opera
 
 echo "<script>alert('Data berhasil Edit !');document.location='user_admin.php'</script>";
 }
+
+
+if(isset($_POST['operator'])){
+    $id = $_POST['id_operator'];
+    $nama = $_POST['nama_operator'];
+     
+    // menginput data ke table barang
+     
+    mysqli_query($mysqli,"Update operator set nama_operator = '$nama' where id_operator = '$id' ")or die(mysqli_error($mysqli));
+     
+    // mengalihkan halaman kembali ke index.php
+    
+    echo "<script>alert('Data berhasil Edit !');document.location='user_operator.php'</script>";
+    }
 ?>

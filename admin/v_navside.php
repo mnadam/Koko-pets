@@ -25,28 +25,30 @@
                     </li>
                     
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i>Managemen User<span class="fa arrow"></span></a>
+                        <a href="#"  <?php if(($pages == "user_admin") OR ($pages == "user_operator") OR ($pages == "user_suplier") OR ($pages == "user_pelanggan")  ) { echo "class='active-menu'"; } ?>><i class="fa fa-users-cog"></i>Managemen User<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                        <?php if($level == "4") { ?>
                             <li>
-                                <a href="user_admin.php">Admin</a>
+                                <a href="user_admin.php" <?php if($pages == "user_admin") { echo "class='active-menu'"; } ?>>Admin</a>
                             </li>
+                        <?PHP }; ?>
                             <li>
-                                <a href="user_operator.php">Operator</a>
-                            </li>
-
-                            <li>
-                                <a href="#">Suplier</a>
+                                <a href="user_operator.php" <?php if($pages == "user_operator") { echo "class='active-menu'"; } ?>>Operator</a>
                             </li>
 
                             <li>
-                                <a href="#">Pelanggan</a>
+                                <a href="user_suplier.php" <?php if($pages == "user_suplier") { echo "class='active-menu'"; } ?>>Suplier</a>
+                            </li>
+
+                            <li>
+                                <a href="user_pelanggan.php" <?php if($pages == "user_pelanggan") { echo "class='active-menu'"; } ?>>Pelanggan</a>
                             </li>
                             
                         </ul>
                     </li>
 
                     <li>
-                        <a href="empty.html"><i class="fa fa-fw fa-file"></i> Empty Page</a>
+                        <a href="logout.php"><i class="fa fa-sign-out"></i> Logout </a>
                     </li>
                 </ul>
 
